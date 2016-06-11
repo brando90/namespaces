@@ -44,14 +44,14 @@ class Namespace(dict):
   def __getattr__(self, name):
     '''Behaves similarly to collections.namedtuple#__getattr__.'''
     try:
-      return self[name]
+      return dict.__getitem__(self, name)
     except KeyError:
       raise AttributeError(
         "'{}' object has no attribute '{}'".format(type(self).__name__, name)
       )
 
   def __setattr__(self, name, value):
-    self[name] = value
+    dict.__setitem__(self, name, value)
 
   def __repr__(self):
     '''Representation is a valid python expression for creating a Namespace
@@ -69,7 +69,7 @@ class Namespace(dict):
     return FrozenNamespace(self)
 
 class FrozenNamespace(Namespace):
-  '''Immutable Namespace. Is hashable.'''
+  '''Immutable, hashable Namespace.'''
 
   def __setattr__(self, name, value):
     '''Overridden with an exception to preserve immutability.

@@ -1,4 +1,4 @@
-mespace` is a flexible, mutable version of `collections.namedtuple`.
+`Namespace` is a flexible, mutable version of `collections.namedtuple`.
 
 The API of `Namespace` is as follows:
 ```python

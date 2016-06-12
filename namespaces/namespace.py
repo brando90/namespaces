@@ -1,13 +1,6 @@
 from __future__ import unicode_literals
 import keyword
-import re
-
-def isidentifier(string):
-  '''Backport of python3's str#isidentifier.
-  Checks that the string begins with an alphabetic character or underscore and
-  contains only alphanumeric characters and underscores.
-  '''
-  return bool(re.match(r'^[^\d\W]\w*$', string))
+from namespaces import isidentifier
 
 class Namespace(dict):
   '''A dictionary with attributes instead of keys.
@@ -66,29 +59,5 @@ class Namespace(dict):
     return not self == other
 
   def immutable(self):
+    from namespaces import FrozenNamespace
     return FrozenNamespace(self)
-
-class FrozenNamespace(Namespace):
-  '''Immutable, hashable Namespace.'''
-
-  __hash_key = '__hash'
-
-  def __init__(self, *args, **kwargs):
-    self.__dict__[FrozenNamespace.__hash_key] = None
-    super(self.__class__, self).__init__(*args, **kwargs)
-
-  def __setattr__(self, name, value):
-    '''Overridden with an exception to preserve immutability.
-    Behaves similarly to collections.namedtuple#__setattr__.'''
-    raise AttributeError(
-      "'{}' object has no attribute '__setattr__'".format(type(self).__name__)
-    )
-
-  def __hash__(self):
-    '''Caches lazily-evaluated hash for performance.'''
-    if self.__dict__[FrozenNamespace.__hash_key] is None:
-      self.__dict__[FrozenNamespace.__hash_key] = hash(frozenset(self.items()))
-    return self.__dict__[FrozenNamespace.__hash_key]
-
-  def mutable(self):
-    return Namespace(self)

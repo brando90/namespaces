@@ -1,8 +1,8 @@
 from setuptools import setup
 
 setup(
-  name='namespace',
-  version='1.0.0',
+  name='pcattori-namespace',
+  version='0.1.0',
   description='Python dictionaries with attributes instead of keys',
   url='https://github.com/pcattori/namespace',
   author='Pedro Cattori',

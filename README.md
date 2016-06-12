@@ -1,3 +1,10 @@
+## Install
+
+```bash
+$ pip install pcattori.namespace
+```
+
+## API
 `Namespace` is a flexible, mutable version of `collections.namedtuple`.
 
 The API of `Namespace` is as follows:

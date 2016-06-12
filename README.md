@@ -1,7 +1,7 @@
 ## Install
 
 ```bash
-$ pip install pcattori-namespace
+$ pip install namespaces
 ```
 
 ## API
@@ -9,7 +9,7 @@ $ pip install pcattori-namespace
 
 The API of `Namespace` is as follows:
 ```python
-import namespace as ns
+import namespaces as ns
 ns = ns.Namespace(a=1, b=2)
 fns = ns.FrozenNamespace(ns)
 fns.b # => 2

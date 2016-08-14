@@ -5,7 +5,7 @@ $ pip install namespaces
 ```
 
 ## API
-`Namespace` is a flexible, mutable version of `collections.namedtuple`.
+`Namespace` is a flexible, mutable version of [`collections.namedtuple`](https://docs.python.org/2/library/collections.html#collections.namedtuple). You can also think about it as a dictionary that uses dot-notation access instead of bracket-notation access (ie. `ns.attr` instead of `ns['attr']`).
 
 The API of `Namespace` is as follows:
 ```python
@@ -20,6 +20,8 @@ fns.c = 3 # => AttributeError
 ```
 
 `__getitem__` and `__setitem__` are disabled to avoid accidental access to potentially API-breaking behavior.
+
+`FrozenNamespace` is an immutable, hashable `Namespace`. The hash is lazily computed and is cached for performance.
 
 `FrozenNamespace` guards against mutations via `__setattr__` but can be mutated if you try hard enough...
 > Your colleague may be missing the point of a "consenting adults language" where nothing in pure python code is truly private (in the sense of being enforced).

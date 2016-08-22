@@ -1,27 +1,36 @@
 from __future__ import unicode_literals
-from namespaces import Namespace
+import collections
 
-class FrozenNamespace(Namespace):
+class FrozenNamespace(collections.Mapping):
   '''Immutable, hashable Namespace.'''
 
-  __hash_key = '__hash'
-
   def __init__(self, *args, **kwargs):
-    self.__dict__[FrozenNamespace.__hash_key] = None
-    super(self.__class__, self).__init__(*args, **kwargs)
+    self._dict = dict(*args, **kwargs)
+    self._hash = None
 
-  def __setattr__(self, name, value):
-    '''Overridden with an exception to preserve immutability.
-    Behaves similarly to collections.namedtuple#__setattr__.'''
-    raise AttributeError(
-      "'{}' object has no attribute '__setattr__'".format(type(self).__name__)
-    )
+  def __getitem__(self, key):
+    return self._dict[key]
+
+  def __len__(self):
+    return len(self._dict)
+
+  def __iter__(self):
+    return iter(self._dict)
+
+  def __getattr__(self, name):
+    return self._dict[name]
+
+  def __repr__(self):
+    '''Representation is a valid python expression for creating a FrozenNamespace
+    (assuming contents also implement __repr__ as valid python expressions).'''
+    kwargs_strs = ['{}={}'.format(k,repr(v)) for k,v in self.iteritems()]
+    return '{}({})'.format(type(self).__name__, ', '.join(kwargs_strs))
 
   def __hash__(self):
     '''Caches lazily-evaluated hash for performance.'''
-    if self.__dict__[FrozenNamespace.__hash_key] is None:
-      self.__dict__[FrozenNamespace.__hash_key] = hash(frozenset(self.items()))
-    return self.__dict__[FrozenNamespace.__hash_key]
+    if self._hash is None:
+      self._hash = hash(frozenset(self.items()))
+    return self._hash
 
   def mutable(self):
     return Namespace(self)

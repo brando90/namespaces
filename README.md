@@ -1,8 +1,6 @@
 > Namespaces are one honking great idea -- let's do more of those!
 - [PEP 20: The Zen of Python](https://www.python.org/dev/peps/pep-0020/)
 
-^admittedly out-of-context :P
-
 ## Install
 
 ```bash

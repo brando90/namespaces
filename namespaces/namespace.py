@@ -6,19 +6,19 @@ class Namespace(dict):
   '''
 
   def __init__(self, *args, **kwargs):
-    dict.__init__(self, dict(*args, **kwargs))
+    super(Namespace, self).__init__(*args, **kwargs)
 
   def __getattr__(self, name):
     '''Behaves similarly to collections.namedtuple#__getattr__.'''
     try:
-      return dict.__getitem__(self, name)
+      return self[name]
     except KeyError:
       raise AttributeError(
         "'{}' object has no attribute '{}'".format(type(self).__name__, name)
       )
 
   def __setattr__(self, name, value):
-    dict.__setitem__(self, name, value)
+    self[name] = value
 
   def __repr__(self):
     '''Representation is a valid python expression for creating a Namespace
@@ -27,7 +27,7 @@ class Namespace(dict):
     return '{}({})'.format(type(self).__name__, ', '.join(items))
 
   def __eq__(self, other):
-    return isinstance(other, type(self)) and dict.__eq__(self, other)
+    return isinstance(other, type(self)) and super(Namespace).__eq__(self, other)
 
   def __ne__(self, other):
     return not self == other

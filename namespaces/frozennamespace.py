@@ -1,5 +1,4 @@
 from __future__ import unicode_literals
-from icicle import FrozenDict
 from namespaces import Namespace
 
 class FrozenNamespace(Namespace):

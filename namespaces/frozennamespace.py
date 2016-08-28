@@ -4,10 +4,10 @@ from namespaces import Namespace
 class FrozenNamespace(FrozenDict):
   '''Immutable, hashable Namespace.'''
 
-  __hash_key = '__hash'
+  RESERVED = ['_hash', '_dict']
 
   def __init__(self, *args, **kwargs):
-    self.__dict__[FrozenNamespace.__hash_key] = None
+    self._hash = None
     super(self.__class__, self).__init__(*args, **kwargs)
 
   def __getattr__(self, name):
@@ -18,6 +18,13 @@ class FrozenNamespace(FrozenDict):
       raise AttributeError(
         "'{}' object has no attribute '{}'".format(type(self).__name__, name)
       )
+
+  def __setattr__(self, name, value):
+    if name not in FrozenNamespace.RESERVED:
+      raise AttributeError(
+        "'{}' object has no attribute '{}'".format(type(self).__name__, name)
+      )
+    super(self.__class__, self).__setattr__(name, value)
 
   def __repr__(self):
     '''Representation is a valid python expression for creating a FrozenNamespace
@@ -33,9 +40,9 @@ class FrozenNamespace(FrozenDict):
 
   def __hash__(self):
     '''Caches lazily-evaluated hash for performance.'''
-    if self.__dict__[FrozenNamespace.__hash_key] is None:
-      self.__dict__[FrozenNamespace.__hash_key] = hash(frozenset(self.items()))
-    return self.__dict__[FrozenNamespace.__hash_key]
+    if self._hash is None:
+      self._hash = hash(frozenset(self.items()))
+    return self._hash
 
   def mutable(self):
     return Namespace(self)

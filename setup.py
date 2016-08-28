@@ -9,4 +9,5 @@ setup(
   author_email='pcattori@gmail.com',
   license='MIT',
   packages=['namespaces']
+  # TODO requires
 )

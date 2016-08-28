@@ -1,7 +1,8 @@
 from __future__ import unicode_literals
+from icicle import FrozenDict
 from namespaces import Namespace
 
-class FrozenNamespace(Namespace):
+class FrozenNamespace(Namespace, FrozenDict):
   '''Immutable, hashable Namespace.'''
 
   __hash_key = '__hash'

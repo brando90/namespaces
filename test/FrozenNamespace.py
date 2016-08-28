@@ -26,12 +26,20 @@ class FrozenNamespaceTest(unittest.TestCase):
     self.assertIsInstance(fn, FrozenNamespace)
     self.assertEqual(ns.items(), fn.items())
 
+  def test_item_get(self):
+    fn = FrozenNamespace(a=1, b=2)
+    self.assertEqual(fn['a'], 1)
+
   def test_item_set(self):
     fn = FrozenNamespace()
     with self.assertRaises(TypeError) as context:
       fn['c'] = 3
     message = "'FrozenNamespace' object does not support item assignment"
     self.assertEqual(message, context.exception.message)
+
+  def test_attr_get(self):
+    fn = FrozenNamespace(a=1, b=2)
+    self.assertEqual(fn.a, 1)
 
   def test_attr_set(self):
     fn = FrozenNamespace()
@@ -55,6 +63,10 @@ class FrozenNamespaceTest(unittest.TestCase):
       del fn['a']
     message = "'FrozenNamespace' object does not support item deletion"
     self.assertEqual(message, context.exception.message)
+
+  def test_hashable(self):
+    fn = FrozenNamespace(a=1, b=2)
+    self.assertIsInstance(hash(fn), int)
 
 if __name__ == '__main__':
   unittest.main()

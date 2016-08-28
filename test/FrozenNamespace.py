@@ -30,15 +30,15 @@ class FrozenNamespaceTest(unittest.TestCase):
     fn = FrozenNamespace()
     with self.assertRaises(TypeError) as context:
       fn['c'] = 3
-    message = "TypeError: 'FrozenNamespace' object does not support item assignment"
+    message = "'FrozenNamespace' object does not support item assignment"
     self.assertEqual(message, context.exception.message)
 
   def test_attr_set(self):
     fn = FrozenNamespace()
-    # with self.assertRaises(AttributeError) as context:
-    fn.c = 3
-    # message = "'FrozenNamespace' object has no attribute '__setattr__'"
-    # self.assertEqual(message, context.exception.message)
+    with self.assertRaises(AttributeError) as context:
+      fn.c = 3
+    message = "AttributeError: 'FrozenNamespace' object has no attribute 'c'"
+    self.assertEqual(message, context.exception.message)
 
   def test_len(self):
     fn = FrozenNamespace(a=1, b=2)
@@ -53,7 +53,7 @@ class FrozenNamespaceTest(unittest.TestCase):
     fn = FrozenNamespace(a=1, b=2)
     with self.assertRaises(TypeError) as context:
       del fn['a']
-    message = "TypeError: 'FrozenNamespace' object does not support item deletion"
+    message = "'FrozenNamespace' object does not support item deletion"
     self.assertEqual(message, context.exception.message)
 
 if __name__ == '__main__':

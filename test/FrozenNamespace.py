@@ -37,7 +37,7 @@ class FrozenNamespaceTest(unittest.TestCase):
     fn = FrozenNamespace()
     with self.assertRaises(AttributeError) as context:
       fn.c = 3
-    message = "AttributeError: 'FrozenNamespace' object has no attribute 'c'"
+    message = "'FrozenNamespace' object has no attribute 'c'"
     self.assertEqual(message, context.exception.message)
 
   def test_len(self):

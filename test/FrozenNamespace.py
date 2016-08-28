@@ -1,6 +1,6 @@
 import unittest
 
-import namespaces as ns
+from namespaces import Namespace, FrozenNamespace
 
 # make them from anonymous/named mappings
 # mutable
@@ -10,60 +10,61 @@ import namespaces as ns
 # iterate over keys, values, and items
 # deletion
 
-class NamespaceTest(unittest.TestCase):
+class FrozenNamespaceTest(unittest.TestCase):
 
   def test_create_empty(self):
-    foo = ns.Namespace()
-    self.assertTrue(True)
+    fn = FrozenNamespace()
+    self.assertIsInstance(fn, FrozenNamespace)
+    self.assertEqual(len(fn), 0)
 
   def test_create_via_kwargs(self): # anonymous mapping
-    foo = ns.Namespace(a=1, b=2)
-    self.assertTrue(True)
+    fn = FrozenNamespace(a=1, b=2)
+    self.assertIsInstance(fn, FrozenNamespace)
+    self.assertEqual(fn.items(), {'a': 1, 'b': 2}.items())
 
   def test_create_via_dict(self): # named mapping
-    foo = ns.Namespace({'a': 1, 'b': 2, tuple('three'): 3, 4: 4})
-    self.assertTrue(True)
+    d = {'a': 1, 'b': 2, tuple('three'): 3, 4: 4}
+    fn = FrozenNamespace(d)
+    self.assertIsInstance(fn, FrozenNamespace)
+    self.assertEqual(fn.items(), d.items())
 
-# TODO: test creation from another namespace (frozen?)
+  def test_create_via_namespace(self):
+    ns = Namespace(a=1, b=2)
+    fn = FrozenNamespace(ns)
+    self.assertIsInstance(fn, FrozenNamespace)
+    self.assertEqual(ns.items(), fn.items())
 
-  def test_item_setget(self):
-    foo = ns.Namespace()
-    foo['c'] = 3
-    self.assertEqual(foo['c'], 3)
+  def test_item_set(self):
+    fn = FrozenNamespace()
+    with self.assertRaises(KeyError) as context:
+      fn['c'] = 3
+    print context.exception.message
+    message = ''
+    self.assertEqual(message, context.exception.message)
 
-  def test_attr_setget(self):
-    foo = ns.Namespace()
-    foo.c = 3
-    self.assertEqual(foo.c, 3)
+  def test_attr_set(self):
+    fn = FrozenNamespace()
+    with self.assertRaises(AttributeError) as context:
+      fn.c = 3
+    message = "'FrozenNamespace' object has no attribute '__setattr__'"
+    self.assertEqual(message, context.exception.message)
 
   def test_len(self):
-    foo = ns.Namespace(a=1, b=2)
-    self.assertEqual(len(foo), 2)
-    foo['c'] = 3
-    self.assertEqual(len(foo), 3)
-    foo.d = 4
-    self.assertEqual(len(foo), 4)
+    fn = FrozenNamespace(a=1, b=2)
+    self.assertEqual(len(fn), 2)
 
   def test_iter(self):
-    foo = ns.Namespace(a=1, b=2)
-    foo_dict = {k: v for k,v in foo.iteritems()}
-    self.assertEqual(foo_dict, {'a': 1, 'b': 2})
+    fn = FrozenNamespace(a=1, b=2)
+    d = {k: v for k,v in fn.iteritems()}
+    self.assertEqual(d, {'a': 1, 'b': 2})
 
   def test_del(self):
-    foo = ns.Namespace(a=1, b=2)
-    del foo['a']
-    self.assertNotIn('a', foo)
-    # del foo.b
-    # self.assertNotIn('b', foo)
-
-# FROZENNAMESPACES
-# test creation via a=1, b=2
-# test creation from another namespace (frozen?)
-# test creation from dict
-
-# test can get via bracket notation
-# test can get via dot-notation
-# test cannot set (via either bracket- or dot-notation)
+    fn = FrozenNamespace(a=1, b=2)
+    with self.assertRaises(AttributeError) as context:
+      del fn['a']
+    print context.exception.message
+    message = ''
+    self.assertEqual(message, context.exception.message)
 
 if __name__ == '__main__':
   unittest.main()

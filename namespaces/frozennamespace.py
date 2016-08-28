@@ -4,7 +4,7 @@ from namespaces import Namespace
 class FrozenNamespace(FrozenDict):
   '''Immutable, hashable Namespace.'''
 
-  RESERVED = ['_hash', '_dict']
+  RESERVED = frozenset(['_dict', '_hash'])
 
   def __init__(self, *args, **kwargs):
     self._hash = None

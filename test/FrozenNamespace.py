@@ -1,6 +1,6 @@
 import unittest
 
-from namespaces import Namespace, FrozenNamespace
+from namespaces import FrozenNamespace, Namespace
 
 class FrozenNamespaceTest(unittest.TestCase):
 

@@ -8,6 +8,8 @@ setup(
   author='Pedro Cattori',
   author_email='pcattori@gmail.com',
   license='MIT',
-  packages=['namespaces']
-  # TODO requires
+  packages=['namespaces'],
+  install_requires=[
+    'icicle>=0.1.3'
+  ]
 )

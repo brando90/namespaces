@@ -23,7 +23,7 @@ class Namespace(dict):
   def __repr__(self):
     '''Representation is a valid python expression for creating a Namespace
     (assuming contents also implement __repr__ as valid python expressions).'''
-    items = ('{}={}'.format(k,repr(v)) for k,v in self.iteritems())
+    items = ('{}={}'.format(k,repr(v)) for k,v in self.items())
     return '{}({})'.format(type(self).__name__, ', '.join(items))
 
   def __eq__(self, other):
